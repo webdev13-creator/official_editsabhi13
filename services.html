@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services | Abhishek Sharma</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: linear-gradient(135deg, #020c1b 0%, #0a1628 35%, #0d2240 60%, #0a3060 100%);
+      min-height: 100vh; color: #cde4ff; overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #020c1b; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(#00c6ff,#0072ff); border-radius: 3px; }
+
+    @keyframes fadeInDown {
+      from { opacity:0; transform:translateY(-30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes glowPulse {
+      0%,100% { text-shadow: 0 0 8px #00c6ff, 0 0 20px #00c6ff88; }
+      50%      { text-shadow: 0 0 25px #00c6ff, 0 0 55px #0072ff; }
+    }
+    @keyframes borderGlow {
+      0%,100% { box-shadow: 0 0 14px #0072ff44, inset 0 0 14px #0072ff11; }
+      50%      { box-shadow: 0 0 32px #00c6ff99, inset 0 0 22px #0072ff44; }
+    }
+    @keyframes gridMove {
+      0%   { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
+    }
+    @keyframes cardFloat {
+      0%,100% { transform:translateY(0px); }
+      50%      { transform:translateY(-6px); }
+    }
+    @keyframes typingBlink {
+      0%,100% { border-right-color: #00c6ff; }
+      50%      { border-right-color: transparent; }
+    }
+    @keyframes shimmerLine {
+      0%   { width: 0%; opacity: 0; }
+      50%  { opacity: 1; }
+      100% { width: 100%; opacity: 0; }
+    }
+
+    .fade-target { opacity:0; transform:translateY(25px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-target.visible { opacity:1; transform:translateY(0); }
+    .slide-up { opacity:0; transform:translateY(60px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.22,.68,0,1.2); }
+    .slide-up.slide-visible { opacity:1; transform:translateY(0); }
+    .typing-cursor { border-right: 2px solid #00c6ff; animation: typingBlink 0.7s infinite; padding-right: 3px; }
+
+    .glow { color: #00c6ff; text-shadow: 0 0 8px #00c6ff, 0 0 18px #00c6ff66; }
+    .glow-pulse { animation: glowPulse 1.2s ease; }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: linear-gradient(90deg, #020c1bcc, #0a1628ee);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid #00c6ff33;
+      padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; box-shadow: 0 4px 24px #0072ff22;
+    }
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem; font-weight: 900;
+      background: linear-gradient(90deg, #00c6ff, #0072ff, #87ceeb);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; letter-spacing: 2px;
+    }
+    #nav-menu { display: flex; gap: 8px; list-style: none; }
+    .nav-link {
+      color: #87ceeb; text-decoration: none;
+      font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 600;
+      padding: 8px 18px; border-radius: 8px;
+      border: 1px solid transparent; letter-spacing: 1px;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .nav-link::before {
+      content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+      width:0; height:2px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::before, .nav-link.active::before { width: 80%; }
+    .nav-link:hover, .nav-link.active {
+      color: #00c6ff; border-color: #00c6ff33;
+      background: #00c6ff0d; text-shadow: 0 0 10px #00c6ff88;
+    }
+    #hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 6px;
+    }
+    #hamburger span { display:block; width:24px; height:2px; background:#00c6ff; border-radius:2px; }
+
+    /* ── HEADER ── */
+    header {
+      position: relative; overflow: hidden;
+      padding: 70px 40px 60px; text-align: center;
+    }
+    header::before {
+      content:''; position:absolute; inset:0;
+      background-image: linear-gradient(#00c6ff0a 1px, transparent 1px),
+                        linear-gradient(90deg, #00c6ff0a 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 6s linear infinite; pointer-events: none;
+    }
+    .header-eyebrow {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.78rem; letter-spacing: 5px;
+      color: #0072ff; text-transform: uppercase;
+      margin-bottom: 14px; animation: fadeInDown 0.8s ease both;
+    }
+    .header-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 0%, #87ceeb 40%, #00c6ff 70%, #0072ff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInDown 0.9s 0.2s ease both; margin-bottom: 14px;
+    }
+    .header-sub {
+      font-size: 1.1rem; color: #87ceeb;
+      animation: fadeInDown 1s 0.4s ease both;
+    }
+
+    /* ── MAIN ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 60px 30px 80px; }
+
+    /* ── SERVICES GRID ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    /* ── SERVICE CARD ── */
+    .service-card {
+      background: linear-gradient(135deg, #0a1a30ee, #0d2240ee);
+      border: 1px solid #00c6ff33;
+      border-radius: 20px;
+      padding: 32px 28px 28px;
+      position: relative; overflow: hidden;
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      animation: borderGlow 4s infinite;
+    }
+    .service-card::before {
+      content:'';
+      position:absolute; top:0; left:0; right:0; height:3px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff, #00c6ff);
+      background-size: 200% 100%;
+      animation: shimmerLine 3s ease-in-out infinite;
+    }
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px #00c6ff33, 0 0 40px #0072ff22;
+      border-color: #00c6ff88;
+    }
+
+    /* Icon */
+    .service-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0072ff22, #00c6ff22);
+      border: 1px solid #00c6ff55;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      box-shadow: 0 0 16px #00c6ff33;
+    }
+
+    /* Name */
+    .service-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      background: linear-gradient(90deg, #00c6ff, #87ceeb);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    /* Desc */
+    .service-desc {
+      font-size: 0.95rem; color: #87ceeb;
+      line-height: 1.65; margin-bottom: 24px;
+    }
+
+    /* CTA Button */
+    .service-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 24px;
+      background: linear-gradient(135deg, #0072ff, #00c6ff);
+      border: none; border-radius: 10px;
+      color: #fff; font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem; font-weight: 700; letter-spacing: 1px;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 18px #0072ff44;
+    }
+    .service-btn:hover {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      box-shadow: 0 8px 28px #00c6ff66;
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: linear-gradient(180deg, #020c1b00, #020c1b);
+      border-top: 1px solid #00c6ff22;
+      padding: 50px 30px 30px; text-align: center;
+    }
+    .social-row { display: flex; justify-content: center; gap: 24px; margin-bottom: 22px; }
+    .social-icon {
+      width: 52px; height: 52px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; text-decoration: none;
+      border: 1px solid #00c6ff44; transition: all 0.35s ease;
+    }
+    .social-icon.ig  { color:#e1306c; border-color:#e1306c44; background:#e1306c0d; }
+    .social-icon.fb  { color:#1877f2; border-color:#1877f244; background:#1877f20d; }
+    .social-icon.wa  { color:#25d366; border-color:#25d36644; background:#25d3660d; }
+    .social-icon:hover { transform: translateY(-4px) scale(1.1); box-shadow: 0 8px 24px #00c6ff33; }
+    .footer-email { font-size: 0.95rem; color: #87ceeb; letter-spacing: 1px; }
+    .footer-email a { color: #00c6ff; text-decoration: none; }
+    .footer-email a:hover { text-shadow: 0 0 10px #00c6ff; }
+    .footer-copy { margin-top: 18px; font-size: 0.8rem; color: #4a6a8a; letter-spacing: 1px; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      #nav-menu { display:none; flex-direction:column; position:absolute; top:64px; left:0; right:0;
+        background:#0a1628f0; padding:20px; gap:4px; }
+      #nav-menu.open { display:flex; }
+      #hamburger { display:flex; }
+      main { padding: 40px 16px 60px; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+<nav>
+  <div class="logo">ABHI<span style="color:#87ceeb">EDITS</span></div>
+  <ul id="nav-menu">
+    <li><a class="nav-link" href="index.html">Home</a></li>
+    <li><a class="nav-link" href="projects.html">My Project</a></li>
+    <li><a class="nav-link" href="services.html">Services</a></li>
+    <li><a class="nav-link" href="about.html">About Me</a></li>
+  </ul>
+  <button id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ══ HEADER ══════════════════════════════════════════════ -->
+<header>
+  <p class="header-eyebrow">✦ What I Offer ✦</p>
+  <h1 class="header-title"><span class="glow">Services</span></h1>
+  <p class="header-sub">Pick a service. Fill the form. Let's create something <span class="glow">extraordinary</span>.</p>
+</header>
+
+<!-- ══ MAIN ══════════════════════════════════════════════ -->
+<main>
+  <div class="services-grid">
+
+    <!-- 1. UGC -->
+    <div class="service-card slide-up">
+      <div class="service-icon">🎥</div>
+      <div class="service-name">UGC Editing</div>
+      <p class="service-desc typewriter">
+        Raw, authentic UGC content transformed into polished, high-converting videos. Perfect for brands looking for real, relatable storytelling that drives purchases.
+      </p>
+      <a href="https://forms.gle/CHJRAYmPrdJvd6PD6" target="_blank" rel="noopener" class="service-btn">
+        <i class="fas fa-paper-plane"></i> Enquire Now
+      </a>
+    </div>
+
+    <!-- 2. Instagram Reels -->
+    <div class="service-card slide-up">
+      <div class="service-icon">📱</div>
+      <div class="service-name">Instagram Reels</div>
+      <p class="service-desc typewriter">
+        Scroll-stopping Instagram Reels with trending audio sync, smooth transitions, text animations, and colour grading tailored to your brand aesthetic.
+      </p>
+      <a href="https://forms.gle/CHJRAYmPrdJvd6PD6" target="_blank" rel="noopener" class="service-btn">
+        <i class="fas fa-paper-plane"></i> Enquire Now
+      </a>
+    </div>
+
+    <!-- 3. Facebook Reels -->
+    <div class="service-card slide-up">
+      <div class="service-icon">👍</div>
+      <div class="service-name">Facebook Reels</div>
+      <p class="service-desc typewriter">
+        Engaging Facebook Reels crafted to maximise reach and shares. Optimised cuts, captions, and hooks designed specifically for Facebook's algorithm.
+      </p>
+      <a href="https://forms.gle/CHJRAYmPrdJvd6PD6" target="_blank" rel="noopener" class="service-btn">
+        <i class="fas fa-paper-plane"></i> Enquire Now
+      </a>
+    </div>
+
+    <!-- 4. YouTube Podcast Intro -->
+    <div class="service-card slide-up">
+      <div class="service-icon">🎙️</div>
+      <div class="service-name">YouTube Podcast Intro</div>
+      <p class="service-desc typewriter">
+        Professional YouTube podcast intro edits — clean talking-head cuts, branded lower-thirds, animated chapter cards and immersive sound design.
+      </p>
+      <a href="https://forms.gle/CHJRAYmPrdJvd6PD6" target="_blank" rel="noopener" class="service-btn">
+        <i class="fas fa-paper-plane"></i> Enquire Now
+      </a>
+    </div>
+
+    <!-- 5. Motion Graphics -->
+    <div class="service-card slide-up">
+      <div class="service-icon">✨</div>
+      <div class="service-name">Motion Graphics</div>
+      <p class="service-desc typewriter">
+        Eye-catching motion graphics — animated logos, kinetic typography, promo animations and dynamic text overlays that elevate your brand identity.
+      </p>
+      <a href="https://forms.gle/CHJRAYmPrdJvd6PD6" target="_blank" rel="noopener" class="service-btn">
+        <i class="fas fa-paper-plane"></i> Enquire Now
+      </a>
+    </div>
+
+  </div>
+</main>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════ -->
+<footer>
+  <div class="social-row">
+    <a href="https://www.instagram.com/official_editsabhi13?igsh=MWVoOGVoZGd5YXJtZQ==" class="social-icon ig" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com/abhishek.sharma.94204?mibextid=ZbWKwL" class="social-icon fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://wa.me/917983884323" class="social-icon wa" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+  <p class="footer-email">
+    📧 Email for Any Work — <a href="mailto:editsabhi18@gmail.com">editsabhi18@gmail.com</a>
+  </p>
+  <p class="footer-copy">© 2025 Abhishek Sharma. All Rights Reserved.</p>
+</footer>
+
+
+<script src="script.js"></script>
+</body>
+</html>

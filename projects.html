@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Projects | Abhishek Sharma</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: linear-gradient(135deg, #020c1b 0%, #0a1628 35%, #0d2240 60%, #0a3060 100%);
+      min-height: 100vh;
+      color: #cde4ff;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #020c1b; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(#00c6ff,#0072ff); border-radius: 3px; }
+
+    @keyframes fadeInDown {
+      from { opacity:0; transform:translateY(-30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes glowPulse {
+      0%,100% { text-shadow: 0 0 8px #00c6ff, 0 0 20px #00c6ff88; }
+      50%      { text-shadow: 0 0 25px #00c6ff, 0 0 55px #0072ff; }
+    }
+    @keyframes borderGlow {
+      0%,100% { box-shadow: 0 0 12px #0072ff44, inset 0 0 12px #0072ff11; }
+      50%      { box-shadow: 0 0 30px #00c6ff88, inset 0 0 20px #0072ff33; }
+    }
+    @keyframes gridMove {
+      0%   { background-position: 0 0; }
+      100% { background-position: 60px 60px; }
+    }
+    @keyframes typingBlink {
+      0%,100% { border-right-color: #00c6ff; }
+      50%      { border-right-color: transparent; }
+    }
+
+    .fade-target { opacity:0; transform:translateY(25px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-target.visible { opacity:1; transform:translateY(0); }
+    .slide-up { opacity:0; transform:translateY(70px); transition: opacity 0.75s ease, transform 0.75s cubic-bezier(.22,.68,0,1.2); }
+    .slide-up.slide-visible { opacity:1; transform:translateY(0); }
+    .typing-cursor { border-right: 2px solid #00c6ff; animation: typingBlink 0.7s infinite; padding-right: 3px; }
+
+    .glow {
+      color: #00c6ff;
+      text-shadow: 0 0 8px #00c6ff, 0 0 18px #00c6ff66;
+    }
+    .glow-pulse { animation: glowPulse 1.2s ease; }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: linear-gradient(90deg, #020c1bcc, #0a1628ee);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid #00c6ff33;
+      padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 4px 24px #0072ff22;
+    }
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem; font-weight: 900;
+      background: linear-gradient(90deg, #00c6ff, #0072ff, #87ceeb);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; letter-spacing: 2px;
+    }
+    #nav-menu { display: flex; gap: 8px; list-style: none; }
+    .nav-link {
+      color: #87ceeb; text-decoration: none;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      padding: 8px 18px; border-radius: 8px;
+      border: 1px solid transparent; letter-spacing: 1px;
+      transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .nav-link::before {
+      content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+      width:0; height:2px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::before, .nav-link.active::before { width: 80%; }
+    .nav-link:hover, .nav-link.active {
+      color: #00c6ff; border-color: #00c6ff33;
+      background: #00c6ff0d; text-shadow: 0 0 10px #00c6ff88;
+    }
+    #hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 6px;
+    }
+    #hamburger span { display:block; width:24px; height:2px; background:#00c6ff; border-radius:2px; transition:all 0.3s; }
+
+    /* ── HEADER ── */
+    header {
+      position: relative; overflow: hidden;
+      padding: 70px 40px 60px; text-align: center;
+    }
+    header::before {
+      content:''; position:absolute; inset:0;
+      background-image: linear-gradient(#00c6ff0a 1px, transparent 1px),
+                        linear-gradient(90deg, #00c6ff0a 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 6s linear infinite;
+      pointer-events: none;
+    }
+    .header-eyebrow {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.78rem; letter-spacing: 5px;
+      color: #0072ff; text-transform: uppercase;
+      margin-bottom: 14px;
+      animation: fadeInDown 0.8s ease both;
+    }
+    .header-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900; line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 0%, #87ceeb 40%, #00c6ff 70%, #0072ff 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeInDown 0.9s 0.2s ease both;
+      margin-bottom: 14px;
+    }
+    .header-sub {
+      font-size: 1.1rem; color: #87ceeb;
+      animation: fadeInDown 1s 0.4s ease both;
+    }
+
+    /* ── MAIN ── */
+    main { max-width: 1200px; margin: 0 auto; padding: 60px 30px 80px; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+      background: linear-gradient(90deg, #00c6ff, #87ceeb);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 40px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .section-label::after {
+      content:''; flex:1; height:1px;
+      background: linear-gradient(90deg, #00c6ff44, transparent);
+    }
+    .section-divider { margin: 60px 0 50px; }
+
+    /* ══ REELS SECTION ══════════════════════════ */
+    .reel-row {
+      display: flex; align-items: flex-start;
+      gap: 36px; margin-bottom: 54px;
+      flex-wrap: wrap;
+    }
+
+    /* Reel video wrapper — portrait 9:16 */
+    .reel-video-wrapper {
+      flex-shrink: 0;
+      width: 250px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid #00c6ff44;
+      box-shadow: 0 0 20px #00c6ff33, 0 0 40px #0072ff22;
+      position: relative;
+      background: #0a1a30;
+      animation: borderGlow 4s infinite;
+    }
+    .reel-video-wrapper video,
+    .reel-placeholder {
+      width: 100%;
+      display: block;
+      border-radius: 18px;
+    }
+    .reel-placeholder {
+      height: 444px; /* 250 × 16/9 ≈ 444 */
+      background: linear-gradient(160deg, #0a1628, #0d2240, #0a3060);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; color: #00c6ff;
+      font-family: 'Orbitron', sans-serif; font-size: 0.75rem;
+      letter-spacing: 2px;
+    }
+    .reel-placeholder i { font-size: 2.5rem; opacity: 0.6; }
+
+    /* Video meta */
+    .video-meta {
+      flex: 1; min-width: 220px;
+      padding-top: 8px;
+    }
+    .video-meta h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      background: linear-gradient(90deg, #00c6ff, #87ceeb);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+    .meta-row {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .meta-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.98rem; color: #b8d4f0;
+    }
+    .meta-item i { color: #00c6ff; width: 18px; }
+    .meta-desc {
+      font-size: 0.95rem; color: #87ceeb;
+      line-height: 1.7; margin-bottom: 18px;
+      border-left: 2px solid #00c6ff55;
+      padding-left: 14px;
+    }
+    .click-here-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px;
+      background: linear-gradient(135deg, #0072ff22, #00c6ff22);
+      border: 1px solid #00c6ff66;
+      border-radius: 8px;
+      color: #00c6ff;
+      text-decoration: none;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.98rem; font-weight: 700;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 12px #00c6ff22;
+    }
+    .click-here-btn:hover {
+      background: linear-gradient(135deg, #0072ff44, #00c6ff44);
+      box-shadow: 0 0 22px #00c6ff66;
+      transform: translateY(-2px);
+      color: #fff;
+    }
+
+    /* ══ YOUTUBE SECTION ════════════════════════ */
+    .yt-row {
+      display: flex; align-items: flex-start;
+      gap: 36px; margin-bottom: 54px; flex-wrap: wrap;
+    }
+    .yt-video-wrapper {
+      flex-shrink: 0;
+      width: 480px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid #0072ff55;
+      box-shadow: 0 0 20px #0072ff33, 0 0 40px #00c6ff22;
+      background: #0a1a30;
+      animation: borderGlow 4s infinite;
+    }
+    .yt-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(160deg, #0a1628, #0d2240, #0a3060);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; color: #0072ff;
+      font-family: 'Orbitron', sans-serif; font-size: 0.75rem;
+      letter-spacing: 2px;
+    }
+    .yt-placeholder i { font-size: 3rem; opacity: 0.7; }
+    .yt-video-wrapper iframe,
+    .yt-video-wrapper video { width:100%; aspect-ratio:16/9; display:block; border:none; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: linear-gradient(180deg, #020c1b00, #020c1b);
+      border-top: 1px solid #00c6ff22;
+      padding: 50px 30px 30px; text-align: center;
+    }
+    .social-row { display: flex; justify-content: center; gap: 24px; margin-bottom: 22px; }
+    .social-icon {
+      width: 52px; height: 52px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; text-decoration: none;
+      border: 1px solid #00c6ff44; transition: all 0.35s ease;
+      position: relative; overflow: hidden;
+    }
+    .social-icon::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(circle at center, #00c6ff22, transparent 70%);
+      opacity:0; transition: opacity 0.3s;
+    }
+    .social-icon:hover::before { opacity:1; }
+    .social-icon.ig  { color:#e1306c; border-color:#e1306c44; background:#e1306c0d; }
+    .social-icon.fb  { color:#1877f2; border-color:#1877f244; background:#1877f20d; }
+    .social-icon.wa  { color:#25d366; border-color:#25d36644; background:#25d3660d; }
+    .social-icon:hover { transform: translateY(-4px) scale(1.1); box-shadow: 0 8px 24px #00c6ff33; }
+    .footer-email { font-size: 0.95rem; color: #87ceeb; letter-spacing: 1px; }
+    .footer-email a { color: #00c6ff; text-decoration: none; }
+    .footer-email a:hover { text-shadow: 0 0 10px #00c6ff; }
+    .footer-copy { margin-top: 18px; font-size: 0.8rem; color: #4a6a8a; letter-spacing: 1px; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      #nav-menu { display:none; flex-direction:column; position:absolute; top:64px; left:0; right:0;
+        background:#0a1628f0; padding:20px; gap:4px; }
+      #nav-menu.open { display:flex; }
+      #hamburger { display:flex; }
+      .reel-row, .yt-row { flex-direction:column; align-items:center; }
+      .reel-video-wrapper { width: 85vw; max-width: 260px; }
+      .yt-video-wrapper { width: 92vw; max-width: 480px; }
+      .video-meta { min-width: unset; width: 100%; }
+      main { padding: 40px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+<nav>
+  <div class="logo">Official_<span style="color:#87ceeb">editsabhi13</span></div>
+  <ul id="nav-menu">
+    <li><a class="nav-link" href="index.html">Home</a></li>
+    <li><a class="nav-link" href="projects.html">My Project</a></li>
+    <li><a class="nav-link" href="services.html">Services</a></li>
+    <li><a class="nav-link" href="about.html">About Me</a></li>
+  </ul>
+  <button id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- ══ HEADER ══════════════════════════════════════════════ -->
+<header>
+  <p class="header-eyebrow">✦ Portfolio ✦</p>
+  <h1 class="header-title">My <span class="glow">Projects</span></h1>
+  <p class="header-sub">Real edits. Real results. Real impact.</p>
+</header>
+
+<!-- ══ MAIN ══════════════════════════════════════════════ -->
+<main>
+
+  <!-- ─── REELS FORMAT ─────────────────────────────── -->
+  <div class="section-label fade-in">🎬 Reels Format Videos</div>
+
+  <!-- REEL 1 -->
+  <div class="reel-row slide-up video-card">
+    <div class="reel-video-wrapper">
+      <video controls src="REEL-1.mov" muted"></video>
+    </div>
+    <div class="video-meta">
+      <h3>About This Project</h3>
+      <div class="meta-row">
+        <div class="meta-item"><i class="fas fa-user"></i><span><strong style="color:#00c6ff">Client:</strong> Brandbuddies Studio</span></div>
+        <div class="meta-item"><i class="fas fa-eye"></i><span><strong style="color:#00c6ff">Views:</strong> 3.1M Views</span></div>
+        <div class="meta-item"><i class="fab fa-instagram"></i><span><strong style="color:#00c6ff">Platform:</strong> Instagram Reels</span></div>
+      </div>
+      <p class="meta-desc typewriter">
+        A highly engaging, fast-paced educational reel created for the finance and trading brand, Stocko. The primary objective of this edit is to maximize viewer retention and clearly break down complex trading timeframes using dynamic visual aids, energetic pacing, and custom motion graphics.
+      </p>
+      <a href="https://www.instagram.com/reel/DPlcrN7iW5i/?igsh=MWNtbGdzbjM3N2Z1Mw==" target="_blank" rel="noopener" class="click-here-btn">
+        <i class="fab fa-instagram"></i> View on Instagram &nbsp; Click Here →
+      </a>
+    </div>
+  </div>
+
+  <!-- REEL 2 -->
+  <div class="reel-row slide-up video-card">
+    <div class="reel-video-wrapper">
+      <video controls src="REEL-2.mp4" muted"></video>
+    </div>
+    <div class="video-meta">
+      <h3>About This Project</h3>
+      <div class="meta-row">
+        <div class="meta-item"><i class="fas fa-user"></i><span><strong style="color:#00c6ff">Client:</strong> Brandbuddies studio</span></div>
+        <div class="meta-item"><i class="fas fa-eye"></i><span><strong style="color:#00c6ff">Views:</strong> 2.9m Views</span></div>
+        <div class="meta-item"><i class="fab fa-instagram"></i><span><strong style="color:#00c6ff">Platform:</strong> Instagram Reels</span></div>
+      </div>
+      <p class="meta-desc typewriter">
+       A highly visual, educational reel designed to break down the technical trading concept of "Market Consolidation." The edit transforms a potentially dry financial topic into an engaging, fast-paced watch by blending humorous visual metaphors, clear technical graphics, and high-energy motion design.
+      </p>
+      <a href="https://www.instagram.com/reel/DQMfwkGieAt/?igsh=dTY4OWxpNmhoODVs" target="_blank" rel="noopener" class="click-here-btn">
+        <i class="fab fa-instagram"></i> View on Instagram &nbsp; Click Here →
+      </a>
+    </div>
+  </div>
+
+  <!-- REEL 3 -->
+  <div class="reel-row slide-up video-card">
+    <div class="reel-video-wrapper">
+      <video controls src="REEL-3.mp4" muted"></video>
+    </div>
+    <div class="video-meta">
+      <h3>About This Project</h3>
+      <div class="meta-row">
+        <div class="meta-item"><i class="fas fa-user"></i><span><strong style="color:#00c6ff">Client:</strong> TheFilmyCharcha</span></div>
+        <div class="meta-item"><i class="fas fa-eye"></i><span><strong style="color:#00c6ff">Views:</strong> 1.1M Views</span></div>
+        <div class="meta-item"><i class="fab fa-facebook-f"></i><span><strong style="color:#00c6ff">Platform:</strong> Instagram Reels</span></div>
+      </div>
+      <p class="meta-desc typewriter">
+        A dramatic, narrative-driven podcast edit crafted for a Hinglish-speaking audience. This project transforms a standard interview clip into a highly engaging story by visually reinforcing the speaker's anecdotes about celebrity paparazzi interactions with custom-generated visual assets and expressive text.
+      </p>
+      <a href="https://www.instagram.com/reel/DaIzJPjs3DR/?igsh=MXZjc24yYzUxaWF4Mg==" target="_blank" rel="noopener" class="click-here-btn">
+        <i class="fab fa-instagram"></i> View on Instagram &nbsp; Click Here →
+      </a>
+    </div>
+  </div>
+
+  <!-- REEL 4 -->
+  <div class="reel-row slide-up video-card">
+    <div class="reel-video-wrapper">
+     <video controls src="REEL-4.mp4" muted"></video>
+    </div>
+    <div class="video-meta">
+      <h3>About This Project</h3>
+      <div class="meta-row">
+        <div class="meta-item"><i class="fas fa-user"></i><span><strong style="color:#00c6ff">Client:</strong> TheFilmyCharcha</span></div>
+        <div class="meta-item"><i class="fas fa-eye"></i><span><strong style="color:#00c6ff">Views:</strong> 401K Views</span></div>
+        <div class="meta-item"><i class="fab fa-instagram"></i><span><strong style="color:#00c6ff">Platform:</strong> Instagram Reels</span></div>
+      </div>
+      <p class="meta-desc typewriter">
+     A narrative-driven, high-retention podcast edit centered around a trending pop-culture topic. This project transforms a critical interview segment into an immersive visual story by utilizing custom AI-generated imagery and social media mockups to perfectly illustrate the speaker's anecdotes and maintain audience engagement.
+      </p>
+      <a href="https://www.instagram.com/reel/DaDVTMyMr8-/?igsh=aGZyMWwyanU2dW9h" target="_blank" rel="noopener" class="click-here-btn">
+        <i class="fab fa-instagram"></i> View on Instagram &nbsp; Click Here →
+      </a>
+    </div>
+  </div>
+
+  <!-- REEL 5 -->
+  <div class="reel-row slide-up video-card">
+    <div class="reel-video-wrapper">
+      <video controls src="REEL-5.mov" muted"></video>
+    </div>
+    <div class="video-meta">
+      <h3>About This Project</h3>
+      <div class="meta-row">
+        <div class="meta-item"><i class="fas fa-user"></i><span><strong style="color:#00c6ff">Client:</strong> TheFilmyCharcha</span></div>
+        <div class="meta-item"><i class="fas fa-eye"></i><span><strong style="color:#00c6ff">Views:</strong> 380K Views</span></div>
+        <div class="meta-item"><i class="fab fa-instagram"></i><span><strong style="color:#00c6ff">Platform:</strong> Instagram Reels</span></div>
+      </div>
+      <p class="meta-desc typewriter">
+        A visually immersive, storytelling-focused podcast edit exploring the topic of astrology and identifying genuine practitioners. This edit stands out by transforming a simple two-person interview into a cinematic experience, utilizing highly realistic custom B-roll to visually anchor the guest’s advice and keep the audience captivated.
+      </p>
+      <a href="https://www.instagram.com/reel/DY1K5NrNdve/?igsh=OGpreTJwa3I4NTJi" target="_blank" rel="noopener" class="click-here-btn">
+        <i class="fab fa-instagram"></i> View on Instagram &nbsp; Click Here →
+      </a>
+    </div>
+  </div>
+
+  <!-- REEL 6 -->
+  <div class="reel-row slide-up video-card">
+    <div class="reel-video-wrapper">
+      <video controls src="REEL-6.mp4" muted"></video>
+    </div>
+    <div class="video-meta">
+      <h3>About This Project</h3>
+      <div class="meta-row">
+        <div class="meta-item"><i class="fas fa-user"></i><span><strong style="color:#00c6ff">Client:</strong> TheFilmyCharcha</span></div>
+        <div class="meta-item"><i class="fas fa-eye"></i><span><strong style="color:#00c6ff">Views:</strong> 344K Views</span></div>
+        <div class="meta-item"><i class="fab fa-facebook-f"></i><span><strong style="color:#00c6ff">Platform:</strong> Instagram Reels</span></div>
+      </div>
+      <p class="meta-desc typewriter">
+        A deeply reflective, culturally resonant podcast edit discussing the spiritual significance of Ujjain and Lord Mahakal. This project highlights the ability to handle serious, faith-based Hinglish content, transforming a calm conversation into an emotionally gripping visual journey through cinematic styling and evocative imagery.
+      </p>
+      <a href="https://www.instagram.com/reel/DY3zOLZNAnD/?igsh=aGZxaTFxbjdrM2dq" target="_blank" rel="noopener" class="click-here-btn">
+        <i class="fab fa-instagram"></i> View on Facebook &nbsp; Click Here →
+      </a>
+    </div>
+  </div>
+
+  <!-- ─── DIVIDER ─── -->
+  <div class="section-divider" style="border-top:1px solid #00c6ff22;"></div>
+
+  <!-- ─── YOUTUBE FORMAT ────────────────────────────── -->
+  <div class="section-label fade-in">▶ YouTube Format Videos</div>
+
+  <!-- YT 1 -->
+  <div class="yt-row slide-up video-card">
+    <div class="yt-video-wrapper">
+       <iframe width="560" height="315" src="https://www.youtube.com/embed/A1JHyNYkDBg?si=nUDi8Xaz2JRu9Ige" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+      
+    </div>
+    <div class="video-meta">
+      <h3>About This Project</h3>
+      <div class="meta-row">
+        <div class="meta-item"><i class="fas fa-user"></i><span><strong style="color:#00c6ff">Client:</strong> TheFilmyCharcha</span></div>
+        <div class="meta-item"><i class="fas fa-eye"></i><span><strong style="color:#00c6ff">Views:</strong> 52kK Views</span></div>
+        <div class="meta-item"><i class="fab fa-youtube" style="color:red"></i><span><strong style="color:#00c6ff">Platform:</strong> YouTube</span></div>
+      </div>
+      <p class="meta-desc typewriter">
+       Edited an engaging spiritual podcast segment discussing devotion and industry experiences, optimized for high audience retention. Integrated dynamic Hinglish and English subtitles, thematic background overlays (like the Mahadev graphic), and professional color grading.  Crafted a compelling "Coming up..." teaser hook at the beginning to instantly capture viewer interest and drive social media performance.
+
+       NOTE- I EDIT ONLY PODCAST INTRO NOT ADJUST FULL PODCAST.
+      </p>
+      <a href="https://youtu.be/A1JHyNYkDBg?si=uEkwpPBKImzO7BCN" target="_blank" rel="noopener" class="click-here-btn">
+        <i class="fab fa-youtube" style="color:#ff0000"></i> View on YouTube &nbsp; Click Here →
+      </a>
+    </div>
+  </div>
+
+  <!-- YT 2 -->
+  <div class="yt-row slide-up video-card">
+    <div class="yt-video-wrapper">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/7oekORR3uq4?si=K0EE-sXuRUBPYlhr&amp;start=7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <div class="video-meta">
+      <h3>About This Project</h3>
+      <div class="meta-row">
+        <div class="meta-item"><i class="fas fa-user"></i><span><strong style="color:#00c6ff">Client:</strong> TheFilmyCharcha</span></div>
+        <div class="meta-item"><i class="fas fa-eye"></i><span><strong style="color:#00c6ff">Views:</strong> 19K Views</span></div>
+        <div class="meta-item"><i class="fab fa-youtube" style="color:red"></i><span><strong style="color:#00c6ff">Platform:</strong> YouTube</span></div>
+      </div>
+      <p class="meta-desc typewriter">
+       Edited an engaging spiritual podcast segment discussing devotion and industry experiences, optimized for high audience retention. Integrated dynamic Hinglish and English subtitles, thematic background overlays (like the Mahadev graphic), and professional color grading.  Crafted a compelling "Coming up..." teaser hook at the beginning to instantly capture viewer interest and drive social media performance.
+
+       NOTE- I EDIT ONLY PODCAST INTRO NOT ADJUST FULL PODCAST.
+      </p>
+      <a href="https://youtu.be/7oekORR3uq4?si=WDIaQB2XK3Ia2XA0" target="_blank" rel="noopener" class="click-here-btn">
+        <i class="fab fa-youtube" style="color:#ff0000"></i> View on YouTube &nbsp; Click Here →
+      </a>
+    </div>
+  </div>
+
+  <!-- YT 3 -->
+  <div class="yt-row slide-up video-card">
+    <div class="yt-video-wrapper">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/wK8unyw_Scw?si=IpKFsD0TpLZqHLTm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <div class="video-meta">
+      <h3>About This Project</h3>
+      <div class="meta-row">
+        <div class="meta-item"><i class="fas fa-user"></i><span><strong style="color:#00c6ff">Client:</strong> TheFlimyCharcha</span></div>
+        <div class="meta-item"><i class="fas fa-eye"></i><span><strong style="color:#00c6ff">Views:</strong> 18K Views</span></div>
+        <div class="meta-item"><i class="fab fa-youtube" style="color:red"></i><span><strong style="color:#00c6ff">Platform:</strong> YouTube</span></div>
+      </div>
+      <p class="meta-desc typewriter">
+       Edited an engaging spiritual podcast segment discussing devotion and industry experiences, optimized for high audience retention. Integrated dynamic Hinglish and English subtitles, thematic background overlays (like the Mahadev graphic), and professional color grading.  Crafted a compelling "Coming up..." teaser hook at the beginning to instantly capture viewer interest and drive social media performance.
+
+       NOTE- I EDIT ONLY PODCAST INTRO NOT ADJUST FULL PODCAST.
+      </p>
+      <a href="https://youtu.be/wK8unyw_Scw?si=PPt-wXh2-_nWb1WD" target="_blank" rel="noopener" class="click-here-btn">
+        <i class="fab fa-youtube" style="color:#ff0000"></i> View on YouTube &nbsp; Click Here →
+      </a>
+    </div>
+  </div>
+
+  <!-- YT 4 -->
+  <div class="yt-row slide-up video-card">
+    <div class="yt-video-wrapper">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/mnY2_O596lU?si=gnwZzfZdcFU3nocS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <div class="video-meta">
+      <h3>About This Project</h3>
+      <div class="meta-row">
+        <div class="meta-item"><i class="fas fa-user"></i><span><strong style="color:#00c6ff">Client:</strong>TheFilmyCharcha</span></div>
+        <div class="meta-item"><i class="fas fa-eye"></i><span><strong style="color:#00c6ff">Views:</strong> 5.2K Views</span></div>
+        <div class="meta-item"><i class="fab fa-youtube" style="color:red"></i><span><strong style="color:#00c6ff">Platform:</strong> YouTube</span></div>
+      </div>
+      <p class="meta-desc typewriter">
+         Edited an engaging spiritual podcast segment discussing devotion and industry experiences, optimized for high audience retention. Integrated dynamic Hinglish and English subtitles, thematic background overlays (like the Mahadev graphic), and professional color grading.  Crafted a compelling "Coming up..." teaser hook at the beginning to instantly capture viewer interest and drive social media performance.
+
+       NOTE- I EDIT ONLY PODCAST INTRO NOT ADJUST FULL PODCAST.
+      </p>
+      <a href="https://youtu.be/mnY2_O596lU?si=iGoWVYc6xXPrgt4t" target="_blank" rel="noopener" class="click-here-btn">
+        <i class="fab fa-youtube" style="color:#ff0000"></i> View on YouTube &nbsp; Click Here →
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════ -->
+<footer>
+  <div class="social-row">
+    <a href="https://www.instagram.com/official_editsabhi13?igsh=MWVoOGVoZGd5YXJtZQ==" class="social-icon ig" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com/abhishek.sharma.94204?mibextid=ZbWKwL" class="social-icon fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://wa.me/917983884323" class="social-icon wa" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+  <p class="footer-email">
+    📧 Email for Any Work — <a href="mailto:editsabhi18@gmail.com">editsabhi18@gmail.com</a>
+  </p>
+  <p class="footer-copy">© 2025 Abhishek Sharma. All Rights Reserved.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
